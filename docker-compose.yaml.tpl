@@ -3,7 +3,7 @@ services:
   control:
     restart: always
     image: rancher/k3s:${K3S_VERSION}
-    command: server --disable-agent --no-deploy servicelb --no-deploy traefik --no-deploy coredns
+    command: server --disable-agent --no-deploy servicelb --no-deploy traefik
     environment:
     - K3S_CLUSTER_SECRET=${K3S_CLUSTER_SECRET}
     - K3S_KUBECONFIG_OUTPUT=/output/k3s-config
