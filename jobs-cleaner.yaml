@@ -1,0 +1,39 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: jobs-cleaner
+  selfLink: /apis/batch/v1beta1/namespaces/default/cronjobs/jobs-cleaner-completed
+spec:
+  concurrencyPolicy: Allow
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    metadata:
+      name: jobs-cleaner
+    spec:
+      template:
+        metadata:
+        spec:
+          containers:
+          - name: jobs-cleaner-completed
+            command:
+            - kubectl
+            - delete
+            - pods
+            - --field-selector=status.phase=Succeeded
+            image: lachlanevenson/k8s-kubectl
+            imagePullPolicy: Always
+          - name: jobs-cleaner-failed
+            command:
+            - kubectl
+            - delete
+            - pods
+            - --field-selector=status.phase=Failed
+            image: lachlanevenson/k8s-kubectl
+            imagePullPolicy: Always
+          dnsPolicy: ClusterFirst
+          restartPolicy: OnFailure
+          schedulerName: default-scheduler
+          terminationGracePeriodSeconds: 30
+  schedule: '*/20 * * * *'
+  successfulJobsHistoryLimit: 1
+  suspend: false
