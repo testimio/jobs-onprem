@@ -23,7 +23,7 @@ check ip
 
 mkdir -p ${HOME}/.kube
 
-export K3S_VERSION="v0.8.0"
+export K3S_VERSION="v1.23.3"
 export K3S_CLUSTER_SECRET=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 
 envsubst < docker-compose.yaml.tpl > docker-compose.yaml
